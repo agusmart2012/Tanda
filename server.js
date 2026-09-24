@@ -4,7 +4,7 @@ const http = require("http");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parseWorkbook } = require("./lib/parse");
+const { parseUpload } = require("./lib/parse");
 const { searchVideos } = require("./lib/youtube");
 
 const ROOT = path.join(__dirname, "public");
@@ -22,6 +22,7 @@ const MIME = {
   ".ico": "image/x-icon",
   ".webmanifest": "application/manifest+json",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  ".pdf": "application/pdf",
 };
 
 loadEnv(path.join(__dirname, ".env"));
@@ -223,11 +224,11 @@ async function handleImport(req, res) {
     return;
   }
   try {
-    sendJson(res, 200, parseWorkbook(buffer, filenameFrom(req)));
+    sendJson(res, 200, await parseUpload(buffer, filenameFrom(req)));
   } catch (error) {
     sendJson(res, error.status || 400, {
       error: "parse",
-      message: error.message || "No pude leer ese Excel.",
+      message: error.message || "No pude leer ese archivo.",
     });
   }
 }

@@ -110,6 +110,86 @@ test("sin ejercicios avisa, y un archivo roto también", () => {
   assert.throws(() => parseWorkbook(Buffer.from("PK esto no es un zip"), "roto.xlsx"), (error) => error.status === 400);
 });
 
+test("una planilla semanal en columnas separa los días", () => {
+  const plan = parseWorkbook(
+    book([
+      [
+        "Semana",
+        [
+          ["", "Lunes", "Martes", "Jueves"],
+          ["Pecho", "Press banca 4x8 60kg", "Remo con barra 4x10", ""],
+          ["", "Fondos 3x10", "Jalón al pecho 3x12", ""],
+          ["Pierna", "", "", "Sentadilla 5x5 100kg"],
+        ],
+      ],
+    ]),
+    "semana-columnas.xlsx"
+  );
+  assert.deepEqual(plan.days.map((day) => day.label), ["Lunes", "Martes", "Jueves"]);
+  assert.deepEqual(names(plan, "Lunes"), ["Press banca", "Fondos"]);
+  assert.equal(plan.days[0].blocks[0].title, "Pecho");
+  assert.equal(plan.days[0].blocks[0].exercises[0].sets, 4);
+  assert.equal(plan.days[0].blocks[0].exercises[0].weight, "60 kg");
+  assert.deepEqual(names(plan, "Martes"), ["Remo con barra", "Jalón al pecho"]);
+  assert.deepEqual(names(plan, "Jueves"), ["Sentadilla"]);
+  assert.equal(plan.days.find((day) => day.label === "Jueves").blocks[0].title, "Pierna");
+});
+
+test("el día en la primera columna no mezcla la semana", () => {
+  const plan = parseWorkbook(
+    book([
+      [
+        "Plan",
+        [
+          ["Lunes", "Press banca", "4", "8", "60"],
+          ["Lunes", "Fondos", "3", "10"],
+          ["Martes", "Sentadilla", "5", "5", "100"],
+        ],
+      ],
+    ]),
+    "por-filas.xlsx"
+  );
+  assert.deepEqual(names(plan, "Lunes"), ["Press banca", "Fondos"]);
+  assert.equal(plan.days.find((day) => day.label === "Lunes").blocks[0].exercises[0].sets, 4);
+  assert.deepEqual(names(plan, "Martes"), ["Sentadilla"]);
+  assert.equal(plan.days.find((day) => day.label === "Martes").blocks[0].exercises[0].weight, "100 kg");
+});
+
+test("si el ejercicio está en la fila y la dosis en el día, no se junta", () => {
+  const plan = parseWorkbook(
+    book([
+      [
+        "Semana",
+        [
+          ["Ejercicio", "Lunes", "Martes"],
+          ["Press banca", "4x8 60kg", ""],
+          ["Sentadilla", "", "5x5 100kg"],
+          ["Remo", "4x10", "4x8"],
+        ],
+      ],
+    ]),
+    "dosis.xlsx"
+  );
+  assert.deepEqual(names(plan, "Lunes"), ["Press banca", "Remo"]);
+  assert.equal(plan.days.find((day) => day.label === "Lunes").blocks[0].exercises[0].reps, "8");
+  assert.deepEqual(names(plan, "Martes"), ["Sentadilla", "Remo"]);
+  assert.equal(plan.days.find((day) => day.label === "Martes").blocks[0].exercises[1].reps, "8");
+});
+
+test("una lista que empieza con el día cambia de día", () => {
+  const plan = parseWorkbook(
+    book([
+      [
+        "Notas",
+        [["Lunes Press banca 4x8 60kg"], ["Fondos 3x10"], ["Martes Sentadilla 5x5 100kg"]],
+      ],
+    ]),
+    "lista.xlsx"
+  );
+  assert.deepEqual(names(plan, "Lunes"), ["Press banca", "Fondos"]);
+  assert.deepEqual(names(plan, "Martes"), ["Sentadilla"]);
+});
+
 test("un historial largo se queda con la última fecha de cada día", () => {
   const rows = [["Fecha", "Ejercicio", "Series", "Reps"]];
   let monday = new Date(Date.UTC(2026, 0, 1));

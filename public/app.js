@@ -415,13 +415,13 @@ function emptyState() {
   return [
     el("p", { class: "kicker" }, cap(longDate())),
     el("h1", {}, "Hoy"),
-    el("p", { class: "lead" }, "Subí el Excel de tu rutina. Tanda arma el día, te deja marcar las series y busca un video de cada ejercicio."),
+    el("p", { class: "lead" }, "Subí el Excel o el PDF de tu rutina. Tanda arma el día, te deja marcar las series y busca un video de cada ejercicio."),
     el("button", {
       class: "btn primary",
       type: "button",
       disabled: state.importing ? "" : null,
       onclick: () => fileInput.click(),
-    }, state.importing ? "Leyendo…" : "Elegir Excel"),
+    }, state.importing ? "Leyendo…" : "Elegir archivo"),
     el("button", {
       class: "btn ghost",
       type: "button",
@@ -538,7 +538,7 @@ function dayRow(row, auto) {
 }
 
 async function deletePlan() {
-  const ok = await ask("Borrar rutina", "Se borra de este teléfono. El Excel original no se toca.", "Borrar");
+  const ok = await ask("Borrar rutina", "Se borra de este teléfono. El archivo original no se toca.", "Borrar");
   if (!ok) return;
   state.plan = null;
   state.focusKey = null;
@@ -554,7 +554,7 @@ function viewSemana() {
   const nodes = [
     el("p", { class: "kicker" }, "Plan"),
     el("h1", {}, "Semana"),
-    el("p", { class: "fine" }, "Revisá que los días coincidan con tu Excel."),
+    el("p", { class: "fine" }, "Revisá que los días coincidan con tu archivo."),
   ];
   for (const row of agenda(state.plan)) nodes.push(dayRow(row, auto));
   if (state.plan.warnings && state.plan.warnings.length) {
@@ -562,7 +562,7 @@ function viewSemana() {
   }
   nodes.push(el("footer", { class: "plan-foot" }, [
     el("p", { class: "fine" }, [state.plan.sourceName, when].filter(Boolean).join(" · ")),
-    el("button", { class: "text-btn", type: "button", onclick: () => fileInput.click() }, "Subir otro Excel"),
+    el("button", { class: "text-btn", type: "button", onclick: () => fileInput.click() }, "Subir otro archivo"),
     el("button", { class: "text-btn danger", type: "button", onclick: () => deletePlan() }, "Borrar rutina"),
   ]));
   return nodes;
@@ -689,8 +689,8 @@ function readFile(file) {
 
 async function importFile(file) {
   if (!file || importLock) return;
-  if (!/\.(xlsx|xls|csv|txt)$/i.test(file.name)) {
-    toast("Tiene que ser un Excel o un CSV.");
+  if (!/\.(xlsx|xls|csv|txt|pdf)$/i.test(file.name)) {
+    toast("Tiene que ser un Excel, un CSV o un PDF.");
     return;
   }
   if (file.size > 8 * 1024 * 1024) {
@@ -709,7 +709,7 @@ async function importFile(file) {
       if (!ok) return;
     }
     state.importing = true;
-    toast("Leyendo el Excel…");
+    toast(file.name.toLowerCase().endsWith(".pdf") ? "Leyendo el PDF…" : "Leyendo el archivo…");
     render();
     applyPlan(await upload(await readFile(file), file.name));
     applied = true;

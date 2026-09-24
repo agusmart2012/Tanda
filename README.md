@@ -1,6 +1,6 @@
 # Tanda
 
-App de rutina para el iPhone. Subís un Excel, ves qué toca hoy, marcás las series y abrís un video de la técnica. El coach responde con Grok, si hay una clave de xAI en esta compu.
+App de rutina para el iPhone. Subís un Excel o un PDF, ves qué toca hoy, marcás las series y abrís un video de la técnica. El coach responde con Grok, si hay una clave de xAI en esta compu.
 
 ## Arrancar
 
@@ -17,15 +17,17 @@ En el iPhone, Safari abre la dirección que imprime la consola, la que empieza c
 
 Si el iPhone no entra, cuando Windows pregunte dejá que Node.js use las redes privadas.
 
-## Excel
+## Excel o PDF
 
 Tanda detecta el archivo. Sirve cualquiera de estas formas:
 
 - Una hoja por día: `Lunes`, `Martes`, `Jueves`, o `Lunes - Pecho`.
-- Una sola hoja con columna `Día`.
+- Una sola hoja con columna `Día`, o el día escrito en la primera columna de cada fila.
+- Los días en columnas: `Lunes | Martes | Jueves`, con los ejercicios debajo de cada uno.
 - Columnas `Ejercicio`, `Series`, `Reps` o `Repeticiones`, `Peso`, `Descanso`, `Notas`. Los nombres pueden variar.
 - Una lista suelta, una línea por ejercicio: `Sentadilla 5x5 100kg`.
 - Un CSV separado por coma o punto y coma.
+- Un PDF con texto: una página por día, una tabla o líneas como `Sentadilla 5x5 100kg`. Una foto escaneada no se lee.
 
 Si los días no tienen fecha ni nombre de día de la semana (Push, Pull, Pierna), Tanda los rota: hoy es el primero y podés saltear.
 

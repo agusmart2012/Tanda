@@ -8,7 +8,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Tanda">
-  <meta name="description" content="Rutina de gym: subí un Excel, marcá las series de hoy y mirá la técnica.">
+  <meta name="description" content="Rutina de gym: subí un Excel o un PDF, marcá las series de hoy y mirá la técnica.">
   <title>Tanda</title>
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon-180.png">
@@ -30,7 +30,7 @@
               </svg>
               Tanda
             </div>
-            <button type="button" class="icon-btn" id="import-btn" aria-label="Subir Excel">
+            <button type="button" class="icon-btn" id="import-btn" aria-label="Subir Excel o PDF">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 5v14M5 12h14"></path>
               </svg>
@@ -74,7 +74,7 @@
       </div>
     </div>
   </div>
-  <input id="file" type="file" accept=".xlsx,.xls,.csv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" hidden>
+  <input id="file" type="file" accept=".xlsx,.xls,.csv,.txt,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" hidden>
   <script src="/app.js"></script>
 </body>
 </html>

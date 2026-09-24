@@ -2,7 +2,7 @@
   "name": "tanda",
   "version": "1.0.0",
   "private": true,
-  "description": "Rutina de gym para iPhone: Excel, series del día, videos y coach.",
+  "description": "Rutina de gym para iPhone: Excel o PDF, series del día, videos y coach.",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
@@ -13,6 +13,10 @@
     "node": ">=18"
   },
   "dependencies": {
+    "pdfjs-dist": "^5.4.296",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1"
   }
 }
