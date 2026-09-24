@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#10110e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Tanda">
+  <meta name="description" content="Rutina de gym: subí un Excel, marcá las series de hoy y mirá la técnica.">
+  <title>Tanda</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="stage">
+    <div class="device">
+      <p class="stage-label">Vista iPhone 13</p>
+      <div class="phone" id="phone">
+        <div class="app" id="app">
+          <header class="top">
+            <div class="brand">
+              <svg class="mark" viewBox="0 0 32 16" aria-hidden="true">
+                <rect x="1" y="3" width="5" height="10" rx="1.2"></rect>
+                <rect x="26" y="3" width="5" height="10" rx="1.2"></rect>
+                <rect x="6" y="6.2" width="20" height="3.6" rx="1"></rect>
+              </svg>
+              Tanda
+            </div>
+            <button type="button" class="icon-btn" id="import-btn" aria-label="Subir Excel">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </button>
+          </header>
+          <main id="main"></main>
+          <form id="composer" hidden>
+            <div id="chips"></div>
+            <div class="composer-row">
+              <label class="sr" for="coach-input">Mensaje para el coach</label>
+              <textarea id="coach-input" rows="1" maxlength="2000" placeholder="Preguntale por la rutina de hoy" enterkeyhint="send"></textarea>
+              <button type="submit" id="coach-send" aria-label="Enviar">↑</button>
+            </div>
+          </form>
+          <nav class="tabs" aria-label="Secciones">
+            <button type="button" class="tab" role="tab" data-tab="hoy" aria-selected="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"></circle><path d="M12 8v5l3 2"></path></svg>
+              Hoy
+            </button>
+            <button type="button" class="tab" role="tab" data-tab="semana" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16"></path></svg>
+              Semana
+            </button>
+            <button type="button" class="tab" role="tab" data-tab="coach" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5 4 20l4.2-1.4A8 8 0 1 0 6 16.5Z"></path></svg>
+              Coach
+            </button>
+          </nav>
+        </div>
+        <div id="overlay" class="overlay" hidden>
+          <button type="button" class="backdrop" id="backdrop" aria-label="Cerrar"></button>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+            <div class="sheet-head">
+              <h2 id="sheet-title"></h2>
+              <button type="button" id="sheet-close">Cerrar</button>
+            </div>
+            <div id="sheet-body"></div>
+          </div>
+        </div>
+        <div id="toast" class="toast" hidden role="status"></div>
+      </div>
+    </div>
+  </div>
+  <input id="file" type="file" accept=".xlsx,.xls,.csv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" hidden>
+  <script src="/app.js"></script>
+</body>
+</html>
